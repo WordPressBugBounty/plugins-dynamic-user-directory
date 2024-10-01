@@ -4,8 +4,8 @@ Contributors: Sarah_Dev
 Donate link: http://sgcustomwebsolutions.com/wordpress-plugin-development/
 Tags: user directory, MemberPress, BuddyPress, member directory, user registration, user meta fields, profile fields, member directory, website directory, directory, user listing, users, members, user profile, user profiles
 Requires at least: 3.0.1
-Tested up to: 6.5.3
-Stable tag: 1.9
+Tested up to: 6.6.2
+Stable tag: 2.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -96,6 +96,11 @@ The DUD troubleshooting guide can be found [here](https://sgcustomwebsolutions.c
 
 
 == Changelog ==
+
+= 2.1 = 
+- Released 9/27/24
+- Successfully tested against WordPress 6.6.2
+- Fixed: Corrected PHP "class not found" error displayed on sites that do not have MemberPress and have selected one of the "Hide Hyphens" format options. 
 
 = 2.0 = 
 - Released 8/5/24

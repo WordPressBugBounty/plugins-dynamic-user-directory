@@ -2002,32 +2002,48 @@ function dynamic_ud_format_meta_val($user_meta_fld, $dud_options, $format, $labe
 						
 		try
 		{
-			$mepr_options = MeprOptions::fetch();
-			if(!is_null($mepr_options))
-			{
-				foreach($mepr_options->custom_fields as $line) {
-					
-				  //echo "Line Field Key: " . $line->field_key . ", DUD Fld Key: " . $meta_fld_key_name . "<BR>";
-				  
-				  if($line->field_key == $meta_fld_key_name) {
-					foreach($line->options as $option_key => $option_val) {
+			if(class_exists('MeprOptions'))
+			{	
+				$mepr_options = MeprOptions::fetch();
+				
+				if(!is_null($mepr_options))
+				{
+					foreach($mepr_options->custom_fields as $line) {
 						
-					  $no_hyphens = str_replace ( "-", " ", $user_meta_fld);
-						
-					  //echo "Line Option Val: " . $option_val->option_name . ", Meta Fld Val: " . $no_hyphens . "<BR>";
-						
-					  if(strtoupper($option_val->option_name) === strtoupper($no_hyphens)) {
-						$value = $option_val->option_name;
-						return $value;
+					  //echo "Line Field Key: " . $line->field_key . ", DUD Fld Key: " . $meta_fld_key_name . "<BR>";
+					  
+					  if($line->field_key == $meta_fld_key_name) {
+						foreach($line->options as $option_key => $option_val) {
+							
+						  $no_hyphens = str_replace ( "-", " ", $user_meta_fld);
+							
+						  //echo "Line Option Val: " . $option_val->option_name . ", Meta Fld Val: " . $no_hyphens . "<BR>";
+							
+						  if(strtoupper($option_val->option_name) === strtoupper($no_hyphens)) {
+							$value = $option_val->option_name;
+							return $value;
+						  }
+						}
 					  }
 					}
-				  }
+					
+					//echo "<BR>";
 				}
-				
-				//echo "<BR>";
+				else
+				{
+					$user_meta_fld = str_replace ( "-", " ", $user_meta_fld);
+			
+					if($format === "30") //first letter in caps
+						return ucwords($user_meta_fld);
+					else if ($format === "37") //all caps
+						return strtoupper($user_meta_fld);	
+					else if ($format === "38") //all lower case
+						return strtolower($user_meta_fld);	
+				}
 			}
 			else
 			{
+				
 				$user_meta_fld = str_replace ( "-", " ", $user_meta_fld);
 		
 				if($format === "30") //first letter in caps
@@ -2036,6 +2052,7 @@ function dynamic_ud_format_meta_val($user_meta_fld, $dud_options, $format, $labe
 					return strtoupper($user_meta_fld);	
 				else if ($format === "38") //all lower case
 					return strtolower($user_meta_fld);	
+				
 			}
 			
 		}
@@ -2189,30 +2206,33 @@ function dynamic_ud_format_meta_val($user_meta_fld, $dud_options, $format, $labe
 						
 						try
 						{
-							$mepr_options = MeprOptions::fetch();
-							if(!is_null($mepr_options))
+							if(class_exists('MeprOptions'))
 							{
-								foreach($mepr_options->custom_fields as $line) {
-									
-								  //echo "Line Field Key: " . $line->field_key . ", DUD Fld Key: " . $meta_fld_key_name . "<BR>";
-								  
-								  if($line->field_key == $meta_fld_key_name) {
-									foreach($line->options as $option_key => $option_val) {
+								$mepr_options = MeprOptions::fetch();
+								if(!is_null($mepr_options))
+								{
+									foreach($mepr_options->custom_fields as $line) {
 										
-									  $no_hyphens = str_replace ( "-", " ", $user_meta_fld[$met]);
-										
-									  //echo "Line Option Val: " . $option_val->option_name . ", Meta Fld Val: " . $no_hyphens . "<BR>";
-										
-									  if(strtoupper($option_val->option_name) === strtoupper($no_hyphens)) {
-										$value = $option_val->option_name;
-										$key = $option_val->option_name;
-										$is_member_press = true;
+									  //echo "Line Field Key: " . $line->field_key . ", DUD Fld Key: " . $meta_fld_key_name . "<BR>";
+									  
+									  if($line->field_key == $meta_fld_key_name) {
+										foreach($line->options as $option_key => $option_val) {
+											
+										  $no_hyphens = str_replace ( "-", " ", $user_meta_fld[$met]);
+											
+										  //echo "Line Option Val: " . $option_val->option_name . ", Meta Fld Val: " . $no_hyphens . "<BR>";
+											
+										  if(strtoupper($option_val->option_name) === strtoupper($no_hyphens)) {
+											$value = $option_val->option_name;
+											$key = $option_val->option_name;
+											$is_member_press = true;
+										  }
+										}
 									  }
 									}
-								  }
+									
+									//echo "<BR>";
 								}
-								
-								//echo "<BR>";
 							}
 							
 						}
@@ -2308,30 +2328,33 @@ function dynamic_ud_format_meta_val($user_meta_fld, $dud_options, $format, $labe
 							
 							try
 							{
-								$mepr_options = MeprOptions::fetch();
-								if(!is_null($mepr_options))
+								if(class_exists('MeprOptions'))
 								{
-									foreach($mepr_options->custom_fields as $line) {
-										
-									  //echo "Line Field Key: " . $line->field_key . ", DUD Fld Key: " . $meta_fld_key_name . "<BR>";
-									  
-									  if($line->field_key == $meta_fld_key_name) {
-										foreach($line->options as $option_key => $option_val) {
+									$mepr_options = MeprOptions::fetch();
+									if(!is_null($mepr_options))
+									{
+										foreach($mepr_options->custom_fields as $line) {
 											
-										  $no_hyphens = str_replace ( "-", " ", $user_meta_fld[$met]);
-											
-										  //echo "Line Option Val: " . $option_val->option_name . ", Meta Fld Val: " . $no_hyphens . "<BR>";
-											
-										  if(strtoupper($option_val->option_name) === strtoupper($no_hyphens)) {
-											$value = $option_val->option_name;
-											$key = $option_val->option_name;
-											$is_member_press = true;
+										  //echo "Line Field Key: " . $line->field_key . ", DUD Fld Key: " . $meta_fld_key_name . "<BR>";
+										  
+										  if($line->field_key == $meta_fld_key_name) {
+											foreach($line->options as $option_key => $option_val) {
+												
+											  $no_hyphens = str_replace ( "-", " ", $user_meta_fld[$met]);
+												
+											  //echo "Line Option Val: " . $option_val->option_name . ", Meta Fld Val: " . $no_hyphens . "<BR>";
+												
+											  if(strtoupper($option_val->option_name) === strtoupper($no_hyphens)) {
+												$value = $option_val->option_name;
+												$key = $option_val->option_name;
+												$is_member_press = true;
+											  }
+											}
 										  }
 										}
-									  }
+										
+										//echo "<BR>";
 									}
-									
-									//echo "<BR>";
 								}
 							}
 							catch(Exception $e)
