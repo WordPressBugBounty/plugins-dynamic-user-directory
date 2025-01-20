@@ -365,6 +365,7 @@ if(! $dud_options ) {
 		'dud_export_link_position' => '',
 		'dud_export_performance' => '',
 		'dud_export_file_prefix' => '',
+		'dud_export_dynamic_csv' => '',
 		'ud_date_registered' => '', 
 		'ud_date_registered_format' => '',
 		'ud_date_lbl' => '', 
@@ -1594,6 +1595,16 @@ if (!wp_script_is( 'user-directory-style', 'enqueued' )) {
 			<td></td>
 		</tr>
 		<tr>
+			<td><b>Dynamically Generate CSV Export File</b></td>
+			<td><select class="dd-menu-no-chk-box-width" name="<?php echo $dud_option_name;?>[dud_export_dynamic_csv]" id="dud_export_dynamic_csv">
+						<OPTION value="off">Off</OPTION> 
+						<OPTION value="on" <?php echo (!empty($dud_options['dud_export_dynamic_csv']) && $dud_options['dud_export_dynamic_csv'] === "on") 
+							? "SELECTED" : ""; ?>>On</OPTION> 						
+				</select> </td>
+			<td>Instead of temporarily saving CSV export files on your local server, turn this on to dynamically generate the csv file and send it straight to the browser. This is more secure and will eliminate overhead on your server. IMPORTANT: This setting is *ONLY* guaranteed to work if your directory page has been created using one of the standard WordPress editors (either Gutenberg or Classic). Problems with the export may occur if used with a page created by a third-party editor.</td>
+			<td></td>
+		 </tr>
+		<tr>
 			<td><b>Export File Prefix</b></td>
 			<td><input style="width:331px;" type="text" maxlength="150" id="dud_export_file_prefix" name="<?php echo $dud_option_name;?>[dud_export_file_prefix]" 
 					value="<?php echo (!empty($dud_options['dud_export_file_prefix'] )) ? esc_attr( $dud_options['dud_export_file_prefix'] ) : "Directory-Export-"; ?>" /></td>
@@ -1645,7 +1656,7 @@ if (!wp_script_is( 'user-directory-style', 'enqueued' )) {
 						<OPTION value="hide" <?php echo (!empty($dud_options['dud_export_show_labels']) && $dud_options['dud_export_show_labels'] === "hide") 
 							? "SELECTED" : ""; ?>>Hide</OPTION> 						
 				</select> </td>
-			<td>Show the directory labels in your export file. These will appear horizontally across the top row.</td>
+			<td>Show the directory field labels in your export file. These will appear horizontally across the top row.</td>
 			<td></td>
 		 </tr>
 		 <tr>
@@ -1663,7 +1674,7 @@ if (!wp_script_is( 'user-directory-style', 'enqueued' )) {
 			<td><input name="<?php echo $dud_option_name;?>[dud_export_performance]" id="dud_export_performance" type="checkbox" 
 			   value="1" <?php if(!empty($dud_options['dud_export_performance'])) { checked( '1', $dud_options['dud_export_performance'] ); } ?> />
 			</td>
-			<td>Check this box if you are experiencing slow page load time or a high number of export files are appearing in your root directory. Instead of auto-generating the export file each time the page loads, an "export" link will be shown that must be clicked before the export file is created. When the page refreshes, the "download" link will then be shown.</td>
+			<td>Check this box if you are experiencing slow page load time or a high number of export files are appearing in your root directory. Instead of auto-generating the export file each time the page loads, the "Directory Export Link Text" (the field below) will be shown as a link that must be clicked to generate the export file. Then when the page refreshes, the "Directory Download Link Text" or "Search Results Download Link Text" will be shown as a link that must be clicked to trigger the download. This setting ONLY applies if the "Dynamically Generate CSV Export File" setting above is turned off.</td>
 			<td></td>
         </tr>
 		<tr>

@@ -4,8 +4,8 @@ Contributors: Sarah_Dev
 Donate link: http://sgcustomwebsolutions.com/wordpress-plugin-development/
 Tags: user directory, MemberPress, BuddyPress, member directory, user registration, user meta fields, profile fields, member directory, website directory, directory, user listing, users, members, user profile, user profiles
 Requires at least: 3.0.1
-Tested up to: 6.6.2
-Stable tag: 2.1
+Tested up to: 6.7.1
+Stable tag: 2.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -96,6 +96,11 @@ The DUD troubleshooting guide can be found [here](https://sgcustomwebsolutions.c
 
 
 == Changelog ==
+
+= 2.2 =
+- Released 1/20/25
+- Successfully tested against WordPress 6.7.1
+- Added new "Dynamically Generate CSV Export File" setting for the Directory Export Add-On
 
 = 2.1 = 
 - Released 9/27/24
