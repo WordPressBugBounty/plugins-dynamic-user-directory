@@ -118,6 +118,7 @@ if(! $dud_options ) {
 		'user_directory_state' => '',
 		'user_directory_zip' => '',
 		'user_directory_country' => '',
+		'user_directory_meta_srch_type_lname' => '',
 		'user_directory_num_meta_srch_flds' => '5',
 		'user_directory_meta_srch_field_1' => '',
 		'user_directory_meta_srch_label_1' => '',
@@ -495,39 +496,38 @@ if ( in_array( 'dynamic-user-directory-multiple-dirs/dynamic-user-directory-mult
 				$dud_multi_instances_err = "Could not load instance " . $load_instance_name . " because it could not be found!"; 
 		}
 	}
-	//else if(isset($_POST['delete']) && $_POST['delete'] === 'Delete')
 	else if(isset($_POST['dud_delete_dir_instance']))
 	{
 		$load_instance_name = $_POST['dud_delete_dir_instance'];
 		$deleted_instance = false;
-		
-		if(strtoupper($load_instance_name) === "ORIGINAL")
-		{
-			$dud_multi_instances_err = "The original settings cannot be deleted!"; 
-		}
-		else
-		{
 			
-			for($inc=0; $inc <= 99; $inc++) 
-			{		  
-				if( $dud_tmp_options = get_option( 'dud_plugin_settings_' . ($inc+1) ) )
+		for($inc=0; $inc <= 99; $inc++) 
+		{		  
+			if( $dud_tmp_options = get_option( 'dud_plugin_settings_' . ($inc+1) ) )
+			{
+				foreach($load_instance_name as $instance=>$name)
 				{
-					foreach($load_instance_name as $instance=>$name)
+					if($name === $dud_tmp_options['dud_instance_name'])
 					{
-						if($name === $dud_tmp_options['dud_instance_name'])
+						if(strtoupper($name) === "ORIGINAL")
 						{
-							delete_option('dud_plugin_settings_' . ($inc+1));
-							$deleted_instance = true;
-							$dud_multi_instances_err = 'The selected directory instances have been deleted.'; 
+							$dud_multi_instances_err = "The original settings cannot be deleted!";
 							break;
-						}
-					}					
-				}
+						}							
+						else
+							delete_option('dud_plugin_settings_' . ($inc+1));
+						
+						$deleted_instance = true;
+						$dud_multi_instances_err = 'The selected directory instances have been deleted.'; 
+						break;
+					}
+				}					
 			}
-			
-			if(!$deleted_instance)
-				$dud_multi_instances_err = 'Could not delete instance ' . $load_instance_name . ' because it could not be found!'; 
 		}
+		
+		if(!$deleted_instance)
+			$dud_multi_instances_err = 'Could not delete instance ' . $load_instance_name . ' because it could not be found!'; 
+		
 	}
 	else if($updated_settings = get_option('dud_updated_settings'))
 	{
@@ -1971,6 +1971,7 @@ if (!wp_script_is( 'user-directory-style', 'enqueued' )) {
 							<OPTION value="37" <?php echo (!empty($dud_options['dud_fld_format_' . $inc]) && $dud_options['dud_fld_format_' . $inc] == "37") ? "SELECTED" : ""; ?>>Hide Hyphens (All Caps)</OPTION>
 							<OPTION value="38" <?php echo (!empty($dud_options['dud_fld_format_' . $inc]) && $dud_options['dud_fld_format_' . $inc] == "38") ? "SELECTED" : ""; ?>>Hide Hyphens (All Lowercase)</OPTION>
 							<OPTION value="34" <?php echo (!empty($dud_options['dud_fld_format_' . $inc]) && $dud_options['dud_fld_format_' . $inc] == "34") ? "SELECTED" : ""; ?>>Image (Field should be a URL)</OPTION>
+							<OPTION value="58" <?php echo (!empty($dud_options['dud_fld_format_' . $inc]) && $dud_options['dud_fld_format_' . $inc] == "58") ? "SELECTED" : ""; ?>>Country Code => Convert to Country Name</OPTION>
 							<OPTION value="6" <?php echo (!empty($dud_options['dud_fld_format_' . $inc]) && $dud_options['dud_fld_format_' . $inc] == "6") ? "SELECTED" : ""; ?>>Phone Number</OPTION>
 							<OPTION value="31" <?php echo (!empty($dud_options['dud_fld_format_' . $inc]) && $dud_options['dud_fld_format_' . $inc] == "31") ? "SELECTED" : ""; ?>>Phone Number (Australian)</OPTION>				
 							<OPTION value="32" <?php echo (!empty($dud_options['dud_fld_format_' . $inc]) && $dud_options['dud_fld_format_' . $inc] == "32") ? "SELECTED" : ""; ?>>Mobile Phone Hyperlink</OPTION>
@@ -2012,6 +2013,10 @@ if (!wp_script_is( 'user-directory-style', 'enqueued' )) {
 							<OPTION value="21" <?php echo (!empty($dud_options['dud_fld_format_' . $inc]) && $dud_options['dud_fld_format_' . $inc] == "21") ? "SELECTED" : ""; ?>>Date => mm/dd/yy hh:mm:ss</OPTION>
 							<OPTION value="22" <?php echo (!empty($dud_options['dud_fld_format_' . $inc]) && $dud_options['dud_fld_format_' . $inc] == "22") ? "SELECTED" : ""; ?>>Date => mm/dd/yy</OPTION>
 							<OPTION value="23" <?php echo (!empty($dud_options['dud_fld_format_' . $inc]) && $dud_options['dud_fld_format_' . $inc] == "23") ? "SELECTED" : ""; ?>>Date => mm/dd/yyyy</OPTION>
+							<OPTION value="60" <?php echo (!empty($dud_options['dud_fld_format_' . $inc]) && $dud_options['dud_fld_format_' . $inc] == "60") ? "SELECTED" : ""; ?>>Date => yyyy (e.g. 2025)</OPTION>
+							<OPTION value="61" <?php echo (!empty($dud_options['dud_fld_format_' . $inc]) && $dud_options['dud_fld_format_' . $inc] == "61") ? "SELECTED" : ""; ?>>Date => Month Day (e.g. January 24)</OPTION>
+							<OPTION value="62" <?php echo (!empty($dud_options['dud_fld_format_' . $inc]) && $dud_options['dud_fld_format_' . $inc] == "62") ? "SELECTED" : ""; ?>>Date => Day Month (e.g. 24 January)</OPTION>
+							
 						</select>
 					</td>
 					
@@ -2457,7 +2462,19 @@ if (!wp_script_is( 'user-directory-style', 'enqueued' )) {
 						<OPTION value="never" <?php echo (!empty($dud_options['ud_show_last_name_srch_fld']) && $dud_options['ud_show_last_name_srch_fld'] == "never") ? "SELECTED" : ""; ?>>Hide</OPTION> 
 					</select> 
 				</td>
-				<td>Choose whether to show the user's Last Name / Display Name as a search field. To search on first name, simply enter the standard WordPress "first_name" meta key name below.</td>
+				<td>Choose whether to show the user's Last Name/Display Name as a search field. To search on first name, simply enter the standard WordPress "first_name" meta key name below.</td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><b>Search Type</b></td>
+				<td>
+					<select class="dd-menu-no-chk-box-width" name="<?php echo $dud_option_name;?>[user_directory_meta_srch_type_lname]" id="user_directory_meta_srch_type_lname">
+						<OPTION value="contains" <?php echo (!empty($dud_options['user_directory_meta_srch_type_lname']) && $dud_options['user_directory_meta_srch_type_lname'] == "contains") ? "SELECTED" : ""; ?>>Contains search value</OPTION> 
+						<OPTION value="starts" <?php echo (!empty($dud_options['user_directory_meta_srch_type_lname']) && $dud_options['user_directory_meta_srch_type_lname'] == "starts") ? "SELECTED" : ""; ?>>Starts with search value</OPTION> 
+						<OPTION value="exact" <?php echo (!empty($dud_options['user_directory_meta_srch_type_lname']) && $dud_options['user_directory_meta_srch_type_lname'] == "exact") ? "SELECTED" : ""; ?>>Matches search value</OPTION> 
+					</select> 
+				</td>
+				<td>Choose what type of search to apply to the Last Name or Dispay Name field.</td>
 				<td></td>
 			</tr>
 			<tr>

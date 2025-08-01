@@ -4,8 +4,8 @@ Contributors: Sarah_Dev
 Donate link: http://sgcustomwebsolutions.com/wordpress-plugin-development/
 Tags: user directory, MemberPress, BuddyPress, member directory, user registration, user meta fields, profile fields, member directory, website directory, directory, user listing, users, members, user profile, user profiles
 Requires at least: 3.0.1
-Tested up to: 6.7.1
-Stable tag: 2.2
+Tested up to: 6.8.2
+Stable tag: 2.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -96,6 +96,15 @@ The DUD troubleshooting guide can be found [here](https://sgcustomwebsolutions.c
 
 
 == Changelog ==
+
+= 2.3 =
+- Released 8/1/25
+- Successfully tested against WordPress 6.8.2
+- Fixed: Eliminated PHP warning messages by updating deprecated PHP code to ensure compatibilty with PHP 8.1
+- Fixed: Corrected display problem when formatting multiple checkboxes 
+- Enhancement: Added several new date format options. You can now configure a date field to show just the numeric year (e.g. 2025), 
+the month and day (e.g. August 1) or the day and month (1 August).
+- Enhancement: Added a country code format option. You can now configure a text field containing a 2 or 3 char country code to show the full country name.
 
 = 2.2 =
 - Released 1/20/25

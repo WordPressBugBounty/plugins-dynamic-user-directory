@@ -2,7 +2,7 @@
 /*** Plugin Name: Dynamic User Directory 
 * Plugin URI: http://sgcustomwebsolutions.com 
 * Description: Creates an alphabetically sorted user directory that will format and display specified user meta data such as name, address, and email. 
-* Version: 2.2
+* Version: 2.3
 * Author: Sarah Giles 
 * Author URI: http://sgcustomwebsolutions.com 
 * License: GPL2 

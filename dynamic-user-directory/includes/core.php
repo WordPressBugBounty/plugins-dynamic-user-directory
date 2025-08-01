@@ -1034,7 +1034,7 @@ if($uids)
 		{
 			if($dud_user_srch_name)
 			{ 					
-				 if ((strpos(strtoupper ($user_last_name), strtoupper ($dud_user_srch_name)) === false))
+				 if ((strpos(strtoupper (handle_special_chars($user_last_name)), strtoupper (handle_special_chars($dud_user_srch_name))) === false))
 				 {
 					  continue;
 				 }	
@@ -1924,6 +1924,15 @@ function dynamic_ud_format_meta_val($user_meta_fld, $dud_options, $format, $labe
 		
 		return "<img class='dud_img' src='" .  $user_meta_fld . "'>";		
 	}
+	//*** Country Code ***********************************************
+	if(!is_array($user_meta_fld) && $format === "58")
+	{
+		$countryName = getCountryName($user_meta_fld);
+		if(is_null($countryName))
+			return "";
+		else
+			return $countryName;
+	}	
 	//*** Phone ************************************************
 	if(!is_array($user_meta_fld) && (($format === "6") || ($format === "31") || ($format === "32") || ($format === "33")))
 	{
@@ -1944,7 +1953,8 @@ function dynamic_ud_format_meta_val($user_meta_fld, $dud_options, $format, $labe
 	}
 	//*** Date *************************************************
 	else if(!is_array($user_meta_fld) && ($format === "16" || $format === "17" || $format === "18" || $format === "19" 
-										  || $format === "20" || $format === "21" || $format === "22" || $format === "23"))
+										  || $format === "20" || $format === "21" || $format === "22" || $format === "23" 
+										  || $format === "60" || $format === "61" || $format === "62"))
 	{
 		if(empty($user_meta_fld)) return "";
 		
@@ -2031,8 +2041,28 @@ function dynamic_ud_format_meta_val($user_meta_fld, $dud_options, $format, $labe
 				}
 				else
 				{
+					if(!is_null($user_meta_fld))
+					{
+						$user_meta_fld = str_replace ( "-", " ", $user_meta_fld);
+				
+						if($format === "30") //first letter in caps
+							return ucwords($user_meta_fld);
+						else if ($format === "37") //all caps
+							return strtoupper($user_meta_fld);	
+						else if ($format === "38") //all lower case
+							return strtolower($user_meta_fld);
+					}	
+					else
+						return $user_meta_fld;
+				}
+			}
+			else
+			{
+				
+				if(!is_null($user_meta_fld))
+				{
 					$user_meta_fld = str_replace ( "-", " ", $user_meta_fld);
-			
+		
 					if($format === "30") //first letter in caps
 						return ucwords($user_meta_fld);
 					else if ($format === "37") //all caps
@@ -2040,18 +2070,8 @@ function dynamic_ud_format_meta_val($user_meta_fld, $dud_options, $format, $labe
 					else if ($format === "38") //all lower case
 						return strtolower($user_meta_fld);	
 				}
-			}
-			else
-			{
-				
-				$user_meta_fld = str_replace ( "-", " ", $user_meta_fld);
-		
-				if($format === "30") //first letter in caps
-					return ucwords($user_meta_fld);
-				else if ($format === "37") //all caps
-					return strtoupper($user_meta_fld);	
-				else if ($format === "38") //all lower case
-					return strtolower($user_meta_fld);	
+				else
+					return $user_meta_fld;
 				
 			}
 			
@@ -2069,9 +2089,9 @@ function dynamic_ud_format_meta_val($user_meta_fld, $dud_options, $format, $labe
 	{		
 		$non_array_numeric_idx = false;
 				
-		if(strlen($user_meta_fld) > 2 && substr($user_meta_fld, 0, 2) === "a:")
+		if(!is_null($user_meta_fld) && strlen($user_meta_fld) > 2 && substr($user_meta_fld, 0, 2) === "a:")
 		{
-			$list_items = unserialize(stripslashes($user_meta_fld));
+			$list_items = unserialize(stripslashes_deep($user_meta_fld));
 			
 			if(empty($list_items)) return "";
 			
@@ -2218,7 +2238,7 @@ function dynamic_ud_format_meta_val($user_meta_fld, $dud_options, $format, $labe
 									  if($line->field_key == $meta_fld_key_name) {
 										foreach($line->options as $option_key => $option_val) {
 											
-										  $no_hyphens = str_replace ( "-", " ", $user_meta_fld[$met]);
+										  $no_hyphens = str_replace ( "-", " ", $value);
 											
 										  //echo "Line Option Val: " . $option_val->option_name . ", Meta Fld Val: " . $no_hyphens . "<BR>";
 											
@@ -2318,8 +2338,7 @@ function dynamic_ud_format_meta_val($user_meta_fld, $dud_options, $format, $labe
 						$parsed_val .= var_export($user_meta_fld[$met], true);
 					else                               //add the item to the meta fld var
 					{
-						
-						//echo "Format var is $format...<BR>";
+						$value = $user_meta_fld[$met];
 						
 						//MemberPress ONLY: Pull the corresponding fld label for all "Show Label" format options
 						if($format === "8" || $format === "11" || $format === "14" || $format === "35" || $format === "36")
@@ -2418,10 +2437,10 @@ function dynamic_ud_format_meta_val($user_meta_fld, $dud_options, $format, $labe
 		if($key_val_array)
 			$parsed_val = apply_filters('dud_format_key_val_array', $parsed_val, $user_meta_fld, $format);
 		
-		return stripslashes($parsed_val);
+		return stripslashes_deep($parsed_val);
 	}
 	
-	return stripslashes($user_meta_fld);	
+	return stripslashes_deep($user_meta_fld);	
 }
 
 function formatPhoneNumber($phoneNumber) 
@@ -2577,7 +2596,24 @@ function formatDateTime($user_meta_fld, $format)
 				//output: 03/24/19
 		else if($format === "23")
 			return date_format($date, 'm/d/Y');
-			//output: 03/24/2019			
+			//output: 03/24/2019	
+		else if($format === "60")
+			return date_format($date, 'Y');
+			//output: 2019
+		else if($format === "61")
+		{
+			$mth = date_format($date, 'F');
+			$day = date_format($date, 'd');
+			
+			return $mth . " " . $day;
+		}
+		else if($format === "62")
+		{
+			$mth = date_format($date, 'F');
+			$day = date_format($date, 'd');
+			
+			return $day . " " . $mth;
+		}			
 		else	
 			return $user_meta_fld;
 	} 
@@ -2607,10 +2643,27 @@ function formatDateTime($user_meta_fld, $format)
 			//output: 03/24/19 17:45:12
 		else if($format === "22")
 			return date_format($dud_datetime, 'm/d/y');
-				//output: 03/24/19
+			//output: 03/24/19
 		else if($format === "23")
 			return date_format($dud_datetime, 'm/d/Y');
 			//output: 03/24/2019
+		else if($format === "60")
+			return date_format($dud_datetime, 'Y');
+			//output: 2019
+		else if($format === "61")
+		{
+			$mth = date_format($dud_datetime, 'F');
+			$day = date_format($dud_datetime, 'd');
+			
+			return $mth . " " . $day;
+		}
+		else if($format === "62")
+		{
+			$mth = date_format($dud_datetime, 'F');
+			$day = date_format($dud_datetime, 'd');
+			
+			return $day . " " . $mth;
+		}			
 		else	
 			return $user_meta_fld;
 	}
@@ -3802,6 +3855,16 @@ function replace_spaces_with_dash($string)
 	return $string;
 }
 
+function handle_special_chars($string){
+    $string = str_replace(array('[\', \']'), '', $string);
+    $string = preg_replace('/\[.*\]/U', '', $string);
+    $string = preg_replace('/&(amp;)?#?[a-z0-9]+;/i', '-', $string);
+    $string = htmlentities($string, ENT_COMPAT, 'utf-8');
+    $string = preg_replace('/&([a-z])(acute|uml|circ|grave|ring|cedil|slash|tilde|caron|lig|quot|rsquo);/i', '\\1', $string );
+    $string = preg_replace(array('/[^a-z0-9]/i', '/[-]+/') , '-', $string);
+    return strtolower(trim($string, '-'));
+}
+
 function dud_cnt_last_name_srch_results($uids, $dud_user_srch_name, $user_directory_sort)
 {
 	$cnt = 0;
@@ -3822,7 +3885,7 @@ function dud_cnt_last_name_srch_results($uids, $dud_user_srch_name, $user_direct
 		
 		if($dud_user_srch_name)
 		{ 
-			 if (!(strpos(strtoupper ($user_last_name), strtoupper ($dud_user_srch_name)) === 0))
+			 if ((strpos(strtoupper (handle_special_chars($user_last_name)), strtoupper (handle_special_chars($dud_user_srch_name))) === false))
 			 {	  		 
 				  continue;
 			 }	
