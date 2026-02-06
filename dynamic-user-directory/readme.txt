@@ -4,8 +4,8 @@ Contributors: Sarah_Dev
 Donate link: http://sgcustomwebsolutions.com/wordpress-plugin-development/
 Tags: user directory, MemberPress, BuddyPress, member directory, user registration, user meta fields, profile fields, member directory, website directory, directory, user listing, users, members, user profile, user profiles
 Requires at least: 3.0.1
-Tested up to: 6.8.2
-Stable tag: 2.3
+Tested up to: 6.8.3
+Stable tag: 2.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -96,6 +96,11 @@ The DUD troubleshooting guide can be found [here](https://sgcustomwebsolutions.c
 
 
 == Changelog ==
+
+= 2.4 =
+- Released 11/11/25
+- Successfully tested against WordPress 6.8.3
+- Fixed: Corrected the XSS vulnerability as reported by patchstack (CVE ID = CVE-2025-62982). The vulnerable input fields are now being sanitized.
 
 = 2.3 =
 - Released 8/1/25

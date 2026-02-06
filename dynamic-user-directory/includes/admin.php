@@ -2779,6 +2779,10 @@ function dynamic_ud_validate( $input )
 		}
 	} 
 	
+	$input['ud_empty_dir_err']        = sanitize_text_field($input['ud_empty_dir_err']);
+	$input['ud_invalid_val_err']      = sanitize_text_field($input['ud_invalid_val_err']);
+	$input['ud_no_users_found_err']   = sanitize_text_field($input['ud_no_users_found_err']);
+			
 	if(!empty($input['ud_avatar_padding'])) 
 	{
 		$input['ud_avatar_padding'] = dynamic_ud_check_numeric( $input['ud_avatar_padding'], $dud_option_name );
