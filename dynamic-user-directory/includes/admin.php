@@ -2782,7 +2782,34 @@ function dynamic_ud_validate( $input )
 	$input['ud_empty_dir_err']        = sanitize_text_field($input['ud_empty_dir_err']);
 	$input['ud_invalid_val_err']      = sanitize_text_field($input['ud_invalid_val_err']);
 	$input['ud_no_users_found_err']   = sanitize_text_field($input['ud_no_users_found_err']);
-			
+	
+	//validate include/exclude arrray
+	if(!empty($input['ud_users_exclude_include'])) {
+		
+		$values = isset($input['ud_users_exclude_include']) ? wp_unslash($input['ud_users_exclude_include']) : null;
+
+		$all_are_int_strings = is_array($values);
+
+		if ($all_are_int_strings) {
+			foreach ($values as $value) {
+				if (
+					! is_string($value) ||
+					! preg_match('/^-?\d+$/D', $value) ||
+					filter_var($value, FILTER_VALIDATE_INT) === false
+				) {
+					$all_are_int_strings = false;
+					break;
+				}
+			}
+		}
+
+		if (!$all_are_int_strings) {
+			// Every element is a string representing a PHP integer.
+			add_settings_error( $dud_option_name, 'ud_users_exclude_include', 'An invalid value was entered for the include/exclude user list', 'error' ); 
+			return get_option( $dud_option_name );
+		}
+	}
+				
 	if(!empty($input['ud_avatar_padding'])) 
 	{
 		$input['ud_avatar_padding'] = dynamic_ud_check_numeric( $input['ud_avatar_padding'], $dud_option_name );

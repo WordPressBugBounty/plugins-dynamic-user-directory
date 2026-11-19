@@ -3598,7 +3598,11 @@ function dynamic_ud_build_inc_exc_query($sort_fld, $ud_hide_roles, $exc_inc_radi
 		
 		foreach($inc_exc_user_ids as $user_id)
 		{
-			$users_sql .= $tbl_name . "." . $user_id_col_name . " = " . $user_id;
+			$user_id_int = intval($user_id);
+			
+			if($user_id_int == 0) continue;
+			
+			$users_sql .= $tbl_name . "." . $user_id_col_name . " = " . $user_id_int;
 		
 			if($user_cnt < $users_arr_len)
 				$users_sql .= " OR ";
@@ -3614,7 +3618,11 @@ function dynamic_ud_build_inc_exc_query($sort_fld, $ud_hide_roles, $exc_inc_radi
 		
 		foreach($inc_exc_user_ids as $user_id)
 		{
-			$users_sql .=  DUD_WPDB_PREFIX . "usermeta.user_id = " . $user_id;
+			$user_id_int = intval($user_id);
+			
+			if($user_id_int == 0) continue;
+			
+			$users_sql .=  DUD_WPDB_PREFIX . "usermeta.user_id = " . $user_id_int;
 		
 			if($user_cnt < $users_arr_len)
 				$users_sql .= " OR ";

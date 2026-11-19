@@ -4,8 +4,8 @@ Contributors: Sarah_Dev
 Donate link: http://sgcustomwebsolutions.com/wordpress-plugin-development/
 Tags: user directory, MemberPress, BuddyPress, member directory, user registration, user meta fields, profile fields, member directory, website directory, directory, user listing, users, members, user profile, user profiles
 Requires at least: 3.0.1
-Tested up to: 6.8.3
-Stable tag: 2.4
+Tested up to: 7.1.5
+Stable tag: 2.5
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -96,6 +96,11 @@ The DUD troubleshooting guide can be found [here](https://sgcustomwebsolutions.c
 
 
 == Changelog ==
+
+= 2.5 =
+- Released 11/19/26
+- Successfully tested against WordPress 7.1.5
+- Fixed: Corrected the SQL injection vulnerability for the user include/exclude field as reported by patchstack. The vulnerable input field is now being sanitized and the string is now cast as an int when building the sql query.
 
 = 2.4 =
 - Released 11/11/25
